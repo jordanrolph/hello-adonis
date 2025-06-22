@@ -22,7 +22,7 @@ Start development server: `node ace serve`
 
 ## Database with Drizzle ORM
 
-This starter swaps the Adonis default Lucid ORM for Drizzle ORM. I find Drizzle type hinting very useful, and Drizzle's Studio feature is really handy when doing the small database admin tasks you often need to do during developement.
+This starter swaps the Adonis default Lucid ORM for Drizzle ORM. I find Drizzle type hinting very useful, and Drizzle's Studio feature is really handy when doing the small database admin tasks you often need to do during development.
 
 The starter assumes you want to use a Postgres database. Drizzle supports lots of database types, so you can switch away from Postgres if you prefer.
 

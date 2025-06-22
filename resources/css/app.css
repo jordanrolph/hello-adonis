@@ -55,3 +55,7 @@ input {
 label {
   display: block;
 }
+
+a {
+  color: var(--color-accent);
+}

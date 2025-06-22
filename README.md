@@ -1,8 +1,8 @@
 # Hello Adonis Starter
 
-An opinionated Adonis starter based on Adonis Web, optimised for type hinting and easy development.
+An opinionated Adonis starter based on AdonisJS, optimised for type hinting and easy development.
 
-Under the hood it's just a normal Adonis app with a few packages swapped out, so you still get the lovely Adonis developer experience... but with a few tactical changes:
+Under the hood it's just a normal Adonis web app with a few packages swapped out, so you still get the lovely Adonis developer experience... but with a few tactical changes:
 
 - Uses the Adonis core web server and services
 - Drizzle ORM for type hinting when interacting with the database

@@ -80,3 +80,13 @@ The CLI will ask you to choose which migration you wish to drop.
 
 TODO: explain where seeds are defined
 TODO: explain how to run seeds
+
+## Rendering typesafe view templates with Kita
+
+This starter swaps the Adonis default EdgeJS template engine for ([KitaJS HTML](https://github.com/kitajs/html)). Kita generates HTML from JSX view templates, which means you can use TSX syntax when writing views.
+
+### Why Kita?
+
+The TSX syntax is easy to read, and gives type hinting, support for components, and syntax highlighting in most code editors without needing any special plugins.
+
+Kita only renders static HTML on the server, so we don't get any of the client side functionality from React or NextJS. But this simplicity does allow for really easy developer experience. You don't need to worry about data fetching or loading states - just pass the data to the view directly from a controller.

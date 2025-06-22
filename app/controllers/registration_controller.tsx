@@ -3,10 +3,11 @@ import { errors } from '@adonisjs/auth'
 import hash from '@adonisjs/core/services/hash'
 import db from '#config/database'
 import { usersTable, User } from '#models/user'
+import { Signup } from '#views/signup'
 
 export default class RegistrationController {
-  async show({ view }: HttpContext) {
-    return view.render('pages/signup')
+  async show({}: HttpContext) {
+    return <Signup />
   }
 
   async store({ auth, request, response }: HttpContext) {

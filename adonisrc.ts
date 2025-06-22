@@ -44,13 +44,12 @@ export default defineConfig({
       environment: ['repl', 'test'],
     },
     () => import('@adonisjs/core/providers/vinejs_provider'),
-    () => import('@adonisjs/core/providers/edge_provider'),
     () => import('@adonisjs/session/session_provider'),
     () => import('@adonisjs/vite/vite_provider'),
     () => import('@adonisjs/shield/shield_provider'),
     () => import('@adonisjs/static/static_provider'),
     () => import('@adonisjs/auth/auth_provider'),
-    () => import('#providers/db_provider')
+    () => import('#providers/db_provider'),
   ],
 
   /*
@@ -90,7 +89,7 @@ export default defineConfig({
 
   metaFiles: [
     {
-      pattern: 'resources/views/**/*.edge',
+      pattern: 'resources/views/**/*.tsx',
       reloadServer: false,
     },
     {

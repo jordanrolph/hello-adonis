@@ -4,10 +4,11 @@ import hash from '@adonisjs/core/services/hash'
 import db from '#config/database'
 import { eq } from 'drizzle-orm'
 import { usersTable } from '#models/user'
+import { Login } from '#views/login'
 
 export default class SessionController {
-  async show({ view }: HttpContext) {
-    return view.render('pages/login')
+  async show({}: HttpContext) {
+    return <Login />
   }
 
   async store({ auth, request, response }: HttpContext) {

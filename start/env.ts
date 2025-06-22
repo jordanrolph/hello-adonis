@@ -1,12 +1,11 @@
 /*
 |--------------------------------------------------------------------------
-| Environment variables service
+| Add new environment variables here
 |--------------------------------------------------------------------------
-|
-| The `Env.create` method creates an instance of the Env service. The
-| service validates the environment variables and also cast values
+| The Env service validates the environment variables and also casts values
 | to JavaScript data types.
-|
+| 
+| Docs: `https://docs.adonisjs.com/guides/getting-started/environment-variables`
 */
 
 import { Env } from '@adonisjs/core/env'
@@ -17,6 +16,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   APP_KEY: Env.schema.string(),
   HOST: Env.schema.string({ format: 'host' }),
   LOG_LEVEL: Env.schema.string(),
+  DATABASE_URL: Env.schema.string(),
 
   /*
   |----------------------------------------------------------

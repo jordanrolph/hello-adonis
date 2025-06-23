@@ -5,10 +5,12 @@ import db from '#config/database'
 import { eq } from 'drizzle-orm'
 import { usersTable } from '#models/user'
 import { Login } from '#views/login'
+import { FlashMessages } from '#types/session'
 
 export default class SessionController {
-  async show({}: HttpContext) {
-    return <Login />
+  async show({ session }: HttpContext) {
+    const flashMessages: FlashMessages = session.flashMessages.all()
+    return <Login flashMessages={flashMessages} />
   }
 
   async store({ auth, request, response }: HttpContext) {

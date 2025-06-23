@@ -1,4 +1,4 @@
-// This helper will generate a hidden input with the CSRF token for use in view templates.
+// This helper will generate a hidden input with the CSRF token for use in view
 
 import { HttpContext } from '@adonisjs/core/http'
 

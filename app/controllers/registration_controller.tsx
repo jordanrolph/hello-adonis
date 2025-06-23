@@ -4,10 +4,12 @@ import hash from '@adonisjs/core/services/hash'
 import db from '#config/database'
 import { usersTable, User } from '#models/user'
 import { Signup } from '#views/signup'
+import { FlashMessages } from '#types/session'
 
 export default class RegistrationController {
-  async show({}: HttpContext) {
-    return <Signup />
+  async show({ session }: HttpContext) {
+    const flashMessages: FlashMessages = session.flashMessages.all()
+    return <Signup flashMessages={flashMessages} />
   }
 
   async store({ auth, request, response }: HttpContext) {

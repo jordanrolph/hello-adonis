@@ -1,4 +1,4 @@
-import { Vite } from '#view_helpers/assetPath_helper'
+import { Vite } from '#view_helpers/assetPath'
 import type { Children } from '@kitajs/html'
 
 interface LayoutProps {

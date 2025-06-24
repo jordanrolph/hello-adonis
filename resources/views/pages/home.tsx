@@ -1,5 +1,5 @@
-import { csrfField } from '#view_helpers/csrfField_helper'
-import { route } from '#view_helpers/route_helper'
+import { csrfField } from '#view_helpers/csrfField'
+import { route } from '#view_helpers/route'
 import type { AuthenticatedUser } from '#types/auth'
 
 interface HomeProps {

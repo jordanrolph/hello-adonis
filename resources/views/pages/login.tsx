@@ -1,6 +1,6 @@
-import { route } from '#view_helpers/route_helper'
-import { csrfField } from '#view_helpers/csrfField_helper'
-// import { inspect } from '#view_helpers/inspect_helper'
+import { route } from '#view_helpers/route'
+import { csrfField } from '#view_helpers/csrfField'
+// import { inspect } from '#view_helpers/inspect'
 import { FlashMessages } from '#types/session'
 
 interface LoginProps {

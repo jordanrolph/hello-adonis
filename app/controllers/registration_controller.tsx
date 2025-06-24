@@ -5,11 +5,16 @@ import db from '#config/database'
 import { usersTable, User } from '#models/user'
 import { Signup } from '#views/signup'
 import { FlashMessages } from '#types/session'
+import { DefaultLayout } from '#layouts/default_layout'
 
 export default class RegistrationController {
   async show({ session }: HttpContext) {
     const flashMessages: FlashMessages = session.flashMessages.all()
-    return <Signup flashMessages={flashMessages} />
+    return (
+      <DefaultLayout pageTitle="Sign up">
+        <Signup flashMessages={flashMessages} />
+      </DefaultLayout>
+    )
   }
 
   async store({ auth, request, response }: HttpContext) {

@@ -1,5 +1,5 @@
-import { csrfField } from '#helpers/csrfField_helper'
-import { route } from '#helpers/route_helper'
+import { csrfField } from '#view_helpers/csrfField_helper'
+import { route } from '#view_helpers/route_helper'
 import { FlashMessages } from '#types/session'
 
 interface SignupProps {
@@ -8,9 +8,12 @@ interface SignupProps {
 
 export function Signup({ flashMessages }: SignupProps) {
   const { errorsBag } = flashMessages
+  const invalidCredentialsMessage = errorsBag?.E_INVALID_CREDENTIALS ?? ''
+
   return (
     <>
-      <p>{errorsBag?.E_INVALID_CREDENTIALS || ''}</p>
+      {invalidCredentialsMessage ?? <p>{invalidCredentialsMessage}</p>}
+
       <form action={route('auth.registration.store')} method="post">
         {csrfField()}
         <div>

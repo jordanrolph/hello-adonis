@@ -1,6 +1,6 @@
-import { route } from '#helpers/route_helper'
-import { csrfField } from '#helpers/csrfField_helper'
-// import { inspect } from '#helpers/inspect_helper'
+import { route } from '#view_helpers/route_helper'
+import { csrfField } from '#view_helpers/csrfField_helper'
+// import { inspect } from '#view_helpers/inspect_helper'
 import { FlashMessages } from '#types/session'
 
 interface LoginProps {
@@ -9,10 +9,13 @@ interface LoginProps {
 
 export function Login({ flashMessages }: LoginProps) {
   const { errorsBag } = flashMessages
+  const invalidCredentialsMessage = errorsBag?.E_INVALID_CREDENTIALS ?? ''
+
   return (
     <>
+      {invalidCredentialsMessage ?? <p>{invalidCredentialsMessage}</p>}
       {/* {inspect(flashMessages)} */}
-      <p>{errorsBag?.E_INVALID_CREDENTIALS || ''}</p>
+
       <form action={route('auth.login.store')} method="post">
         {csrfField()}
         <div>

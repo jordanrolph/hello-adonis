@@ -4,7 +4,7 @@
 /**
  * Example in TSX template:
  * ```
- *      import { Vite } from '#helpers/assetPath_helper'
+ *      import { Vite } from '#view_helpers/assetPath_helper'
  *      // ...then, in component
  *      <Vite.Entrypoint entrypoints={['resources/css/app.scss', 'resources/js/app.js']} />
  * ```

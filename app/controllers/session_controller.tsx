@@ -4,13 +4,18 @@ import hash from '@adonisjs/core/services/hash'
 import db from '#config/database'
 import { eq } from 'drizzle-orm'
 import { usersTable } from '#models/user'
+import { DefaultLayout } from '#layouts/default_layout'
 import { Login } from '#views/login'
 import { FlashMessages } from '#types/session'
 
 export default class SessionController {
   async show({ session }: HttpContext) {
     const flashMessages: FlashMessages = session.flashMessages.all()
-    return <Login flashMessages={flashMessages} />
+    return (
+      <DefaultLayout pageTitle="Login">
+        <Login flashMessages={flashMessages} />
+      </DefaultLayout>
+    )
   }
 
   async store({ auth, request, response }: HttpContext) {

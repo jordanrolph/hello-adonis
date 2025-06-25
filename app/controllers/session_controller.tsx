@@ -7,6 +7,7 @@ import { usersTable } from '#models/user'
 import { DefaultLayout } from '#layouts/default_layout'
 import { Login } from '#views/login'
 import { FlashMessages } from '#types/session'
+import { loginValidator } from '#validators/session'
 
 export default class SessionController {
   async show({ session }: HttpContext) {
@@ -19,11 +20,9 @@ export default class SessionController {
   }
 
   async store({ auth, request, response }: HttpContext) {
-    // 1.  Validate input
-    const { email, password } = request.only(['email', 'password'])
-    if (!email || !password) {
-      throw new errors.E_INVALID_CREDENTIALS('Invalid credentials')
-    }
+    // 1. Validate the form submission
+    const payload = await request.validateUsing(loginValidator)
+    const {email, password} = payload;
 
     // 2. Attempt to find the user by their email address
     const user = await db.query.users.findFirst({ where: eq(usersTable.email, email) })

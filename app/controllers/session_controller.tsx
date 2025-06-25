@@ -6,12 +6,12 @@ import { eq } from 'drizzle-orm'
 import { usersTable } from '#models/user'
 import { DefaultLayout } from '#layouts/default_layout'
 import { Login } from '#views/login'
-import { FlashMessages } from '#types/session'
 import { loginValidator } from '#validators/session'
+import { getFlashMessages } from './helpers/flash_messages.js'
 
 export default class SessionController {
   async show({ session }: HttpContext) {
-    const flashMessages: FlashMessages = session.flashMessages.all()
+    const flashMessages = getFlashMessages(session)
     return (
       <DefaultLayout pageTitle="Login">
         <Login flashMessages={flashMessages} />
@@ -22,7 +22,7 @@ export default class SessionController {
   async store({ auth, request, response }: HttpContext) {
     // 1. Validate the form submission
     const payload = await request.validateUsing(loginValidator)
-    const {email, password} = payload;
+    const { email, password } = payload
 
     // 2. Attempt to find the user by their email address
     const user = await db.query.users.findFirst({ where: eq(usersTable.email, email) })

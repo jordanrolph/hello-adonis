@@ -1,6 +1,5 @@
 import { route } from '#view_helpers/route'
 import { csrfField } from '#view_helpers/csrfField'
-// import { inspect } from '#view_helpers/inspect'
 import { FlashMessages } from '#types/session'
 
 interface LoginProps {
@@ -8,30 +7,30 @@ interface LoginProps {
 }
 
 export function Login({ flashMessages }: LoginProps) {
-  const { errorsBag } = flashMessages
-  const invalidCredentialsMessage = errorsBag?.E_INVALID_CREDENTIALS ?? ''
+  const { errors, oldValues } = flashMessages
 
   return (
     <>
-      {invalidCredentialsMessage ?? <p>{invalidCredentialsMessage}</p>}
-      {/* {inspect(flashMessages)} */}
-
       <form action={route('auth.login.store')} method="post">
         {csrfField()}
+
         <div>
-          <label for="email">Email </label>
-          <input type="email" name="email" id="email" />
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" value={oldValues?.email ?? ''} />
+          {errors?.email && <p>{errors.email}</p>}
         </div>
 
         <div>
-          <label for="password">Password </label>
+          <label for="password">Password</label>
           <input type="password" name="password" id="password" />
+          {errors?.password && <p>{errors.password}</p>}
         </div>
 
         <div>
-          <button type="submit">Login </button>
+          <button type="submit">Login</button>
         </div>
       </form>
+
       <a href={route('auth.registration.show')}>Create a new account</a>
     </>
   )

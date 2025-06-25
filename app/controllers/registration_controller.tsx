@@ -4,13 +4,13 @@ import hash from '@adonisjs/core/services/hash'
 import db from '#config/database'
 import { usersTable, User } from '#models/user'
 import { Signup } from '#views/signup'
-import { FlashMessages } from '#types/session'
 import { DefaultLayout } from '#layouts/default_layout'
 import { signUpValidator } from '#validators/registration'
+import { getFlashMessages } from './helpers/flash_messages.js'
 
 export default class RegistrationController {
   async show({ session }: HttpContext) {
-    const flashMessages: FlashMessages = session.flashMessages.all()
+    const flashMessages = getFlashMessages(session)
     return (
       <DefaultLayout pageTitle="Sign up">
         <Signup flashMessages={flashMessages} />
@@ -21,7 +21,7 @@ export default class RegistrationController {
   async store({ auth, request, response }: HttpContext) {
     // 1. Validate the form submission
     const payload = await request.validateUsing(signUpValidator)
-    const { email, password, fullName } = payload;
+    const { email, password, fullName } = payload
 
     // 2. Hash the password ready to store it
     const hashedPassword = await hash.make(password)

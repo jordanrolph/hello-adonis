@@ -22,9 +22,9 @@ export default class DbProvider {
     try {
       // Test connection using the schema
       await db.query.users.findFirst()
-      console.log('✅ Database connection established')
+      console.log('Database connection established')
     } catch (error) {
-      console.error('❌ Database connection failed:', error)
+      console.error('Database connection failed:', error)
       throw error
     }
   }

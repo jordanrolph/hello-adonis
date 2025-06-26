@@ -90,3 +90,18 @@ This starter swaps the Adonis default EdgeJS template engine for ([KitaJS HTML](
 The TSX syntax is easy to read, and gives type hinting, support for components, and syntax highlighting in most code editors without needing any special plugins.
 
 Kita only renders static HTML on the server, so we don't get any of the client side functionality from React or NextJS. But this simplicity does allow for really easy developer experience. You don't need to worry about data fetching or loading states - just pass the data to the view directly from a controller.
+
+## Adding CSS and JS to Kita views
+
+TODO: Add explainer about Vite.Entrypoint helper
+` <Vite.Entrypoint entrypoints={['resources/js/app.js']} />`
+
+## AlpineJS for adding client side interactivity
+
+TODO: Add overview of Alpine
+TODO: Add explainer of shortform vs longform naming, and triple slash convention
+`/// <reference types="@kitajs/html/alpine.d.ts" />`
+
+### Rich text editing with TipTap and AlpineJS
+
+TODO: Add explainer of TipTap, optional so can delete

@@ -38,6 +38,19 @@ If you're using a Mac, I recommend using `https://postgresapp.com/` which is a s
 
 Set the environment variable `DATABASE_URL` with your Postgres connection string for your production database. How you do this depends on your hosting provider.
 
+## Database commands
+
+### Ace commands
+
+This starter defines some ace commands to simplify using Drizzle, and keep the Developer experience consistent with a normal Adonis app.
+
+Run `node ace list` to see all the available commands. The database specific commands are explained in more detail below, but in summary:
+
+- `node ace make:model` -> Makes a new database model and adds it to the schema
+- `node ace make:migration` -> Generates a new migration file
+- `node ace migration:run` -> Applies any pending migrations to the database
+- `node ace migration:rollback` -> Reverts a migration and deletes the file
+
 ### Exploring the database with Drizzle Studio
 
 Drizzle Studio is great for managing your database tables, and doing simple admin like creating test records.
@@ -48,33 +61,45 @@ To start Drizzle Studio, in terminal run:
 
 When Drizzle Studio starts it will be available at https://local.drizzle.studio.
 
-### Creating or updating a database table
+### Creating or updating a database model
 
-The Drizzle database schema files are stored in the `app/models` folder.
+The Drizzle database models are stored in the `app/models` folder. Note, Drizzle calls these "schema" files in their docs but it's the same concept.
 
-To change an existing table, edit the relevnat schema file then run a migration.
+To create a new database table, run `node ace make:model`. This command will create a new Drizzle model file in `/app/models/` with some boilerplate columns, and add the new table to the schema list at `config/database.ts`. Edit the model file to reflect the table you need, generate a migration, then run the migration to update the actual database structure.
 
-To create a new database table, create a new shema file. Then add it to the schema list at `config/database.ts`, and run a migration.
+To change an existing table, just edit the relevant model, then generate and run a migration.
 
 ### Database Migrations
 
-Migrations are stored in the `/database/migrations` folder, like in a normal Adonis project. But Migration management requires using some Drizzle specific commands instead of AdonisJS Ace commands.
+Migrations are stored in the `/database/migrations` folder, like in a normal Adonis project.
+
+This starter defines some ace commands to help you call the Drizzle specific commands without memorising them.
 
 #### Generate a new migration:
 
-`npx drizzle-kit generate --name="add-user-profiles"`
+Make the changes you need to your database models, then run:
+
+`node ace make:migration`
+
+This custom ace command will prompt you to add a custom name for the migration. The command is basically the same as running `npx drizzle-kit generate --name="add-users-table"`, but the ace command easier to remember.
 
 #### Apply migrations:
 
-`npx drizzle-kit migrate`
+Generate a migration (instructions above), then apply it to the database by running:
 
-### Drop a migration
+`node ace migration:run`
 
-Note: Drizzle currently doesn't have the ability to rollback a migration, so drop is the best alternative. "Drop" is a bit of a nuclear option to rollback because it will also delete the migration file from the `database/migrations` directory. You can recover the deleted file if you have tracked it with git.
+This custom ace command will execute any migration files that haven't been applied to the database yet.
 
-`npx drizzle-kit drop`
+### Rollback a migration
+
+To rollback a migration, run:
+
+`node ace migration:rollback`
 
 The CLI will ask you to choose which migration you wish to drop.
+
+Note: Drizzle's "drop" functionality doesn't rollback migrations in the same way as many other ORMs. Whilst "drop" will rollback a migration from the database, it also delete the migration file from the `database/migrations` directory. If this is not the behaviour you want, you can recover the deleted migration file if you have tracked it with git, or you can generate a new one.
 
 ### Database Seeding
 

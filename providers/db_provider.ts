@@ -22,9 +22,7 @@ export default class DbProvider {
     try {
       // Test connection using the schema
       await db.query.users.findFirst()
-      console.log('Database connection established')
     } catch (error) {
-      console.error('Database connection failed:', error)
       throw error
     }
   }
@@ -33,7 +31,6 @@ export default class DbProvider {
     const db = await this.app.container.make('db')
     if (db.$client && typeof db.$client.end === 'function') {
       await db.$client.end()
-      console.log('🔌 Database connections closed')
     }
   }
 }

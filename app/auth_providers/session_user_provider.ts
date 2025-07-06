@@ -1,6 +1,6 @@
 import db from '#config/database'
 import { eq } from 'drizzle-orm'
-import { usersTable } from '#models/user'
+import { usersTable } from '#models/users'
 import type { InferSelectModel } from 'drizzle-orm'
 import { symbols } from '@adonisjs/auth'
 import { SessionGuardUser, SessionUserProviderContract } from '@adonisjs/auth/types/session'

@@ -3,6 +3,7 @@ import type { CommandOptions } from '@adonisjs/core/types/ace'
 import { writeFile, readFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
+import vine from '@vinejs/vine'
 
 /**
  * Run with `node ace make:model`
@@ -27,18 +28,24 @@ export default class MakeModel extends BaseCommand {
   }
 
   async run() {
+    // Define validation schema
+    const modelNameSchema = vine.compile(
+      vine.object({
+        name: vine.string().trim().minLength(1),
+      })
+    )
+
     // Get singular name
     const singularName =
       this.name ||
       (await this.prompt.ask('Enter the singular name for the model (e.g. "user"):', {
-        validate: (value) => {
-          if (!value.trim()) {
-            return 'Model name is required'
-          }
-          if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(value.trim())) {
+        validate: async (value) => {
+          try {
+            await modelNameSchema.validate({ name: value })
+            return true
+          } catch (error) {
             return 'Model name must be alphanumeric and start with a letter'
           }
-          return true
         },
       }))
 
@@ -46,14 +53,13 @@ export default class MakeModel extends BaseCommand {
     const pluralName = await this.prompt.ask(
       `Enter the plural name for the model (e.g. "users"):`,
       {
-        validate: (value) => {
-          if (!value.trim()) {
-            return 'Plural name is required'
-          }
-          if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(value.trim())) {
+        validate: async (value) => {
+          try {
+            await modelNameSchema.validate({ name: value })
+            return true
+          } catch (error) {
             return 'Plural name must be alphanumeric and start with a letter'
           }
-          return true
         },
       }
     )

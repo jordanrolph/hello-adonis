@@ -1,7 +1,7 @@
 import env from '#start/env'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
-import { usersTable } from '#models/user'
+import { usersTable } from '#models/users'
 
 /**
  * These functions are to setup a Drizzle database connection
@@ -11,8 +11,8 @@ import { usersTable } from '#models/user'
 
 // Build the schema object
 export const schema = {
+  // Other models will be automatically added here by `node ace make:model`
   users: usersTable,
-  // Add other tables here as you create them
 }
 
 export function createDatabase() {

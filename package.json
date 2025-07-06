@@ -74,6 +74,7 @@
     "alpinejs": "^3.14.9",
     "better-sqlite3": "^11.10.0",
     "drizzle-orm": "^0.44.2",
+    "drizzle-seed": "^0.3.1",
     "luxon": "^3.6.1",
     "pg": "^8.16.2",
     "reflect-metadata": "^0.2.2"

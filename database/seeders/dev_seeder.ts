@@ -1,4 +1,4 @@
-import { userFactory } from '#database/factories/user'
+import { usersFactory } from '#database/factories/users'
 
 /**
  * This file is used by the `node ace db:seed` command. It is used
@@ -9,7 +9,7 @@ import { userFactory } from '#database/factories/user'
  */
 export async function seed() {
   console.log(`Creating users`)
-  await userFactory.createMany(10, 1)
+  await usersFactory.createMany(10, 1)
 
   // Add more factory calls here to seed any other data you need
 }

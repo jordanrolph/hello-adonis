@@ -11,10 +11,9 @@ import vine from '@vinejs/vine'
  * This command makes a new boilerplate database model file.
  *
  * - Prompts for singular and plural names with validation
- * - Creates the model file at app/models/{plural}.ts with proper boilerplate
- * - Automatically adds the import and table entry to config/database.ts
- * - Uses proper capitalisation (e.g. User, usersTable, users in schema)
+ * - Uses proper capitalisation (e.g. User, usersTable)
  * - Validates that model files don't already exist
+ * - Creates a new model file at app/models/{plural}.ts with useful boilerplate
  */
 export default class MakeModel extends BaseCommand {
   static commandName = 'make:model'
@@ -66,20 +65,24 @@ export default class MakeModel extends BaseCommand {
 
     const singular = singularName.trim().toLowerCase()
     const plural = pluralName.trim().toLowerCase()
-    const capitalizedSingular = this.capitalize(singular)
+    const capitalizedSingular = singular.charAt(0).toUpperCase() + singular.slice(1)
 
-    this.logger.log(`Creating model "${capitalizedSingular}" (${plural})...`)
+    this.logger.log(`Creating model "${plural}"...`)
 
     try {
       // Create model file
       await this.createModelFile(plural, capitalizedSingular)
-      this.logger.success(`Model file created at app/models/${plural}.ts`)
+      this.logger.log(`Model file created at app/models/${plural}.ts`)
 
-      // Update database config
-      await this.updateDatabaseConfig(plural)
-      this.logger.success(`Updated config/database.ts`)
+      this.logger.success(`Model "${plural}" created successfully!`)
 
-      this.logger.success(`Model "${capitalizedSingular}" created successfully!`)
+      // Suggest next steps
+      this.logger.info(
+        'You should now import this model at `config/database.ts` to add this model to your Drizzle schema'
+      )
+      this.logger.log(
+        '[ optional ] then run `node ace make:factory` to create a seed data factory for this model'
+      )
     } catch (error) {
       this.logger.error(`Failed to create model: ${error.message}`)
       this.exitCode = 1
@@ -107,69 +110,5 @@ export type ${capitalizedSingular} = typeof ${plural}Table.$inferSelect
 `
 
     await writeFile(modelPath, modelContent, 'utf8')
-  }
-
-  private async updateDatabaseConfig(plural: string) {
-    const configPath = join(process.cwd(), 'config', 'database.ts')
-
-    if (!existsSync(configPath)) {
-      throw new Error('config/database.ts not found')
-    }
-
-    let configContent = await readFile(configPath, 'utf8')
-
-    // Add import statement
-    const importStatement = `import { ${plural}Table } from '#models/${plural}'`
-
-    // Find the last import line and add our import after it
-    const importLines = configContent.split('\n').filter((line) => line.trim().startsWith('import'))
-    const lastImportIndex = configContent.lastIndexOf(importLines[importLines.length - 1])
-    const insertPosition = configContent.indexOf('\n', lastImportIndex) + 1
-
-    configContent =
-      configContent.slice(0, insertPosition) +
-      importStatement +
-      '\n' +
-      configContent.slice(insertPosition)
-
-    // Add to schema object
-    const schemaRegex = /(export const schema = \{[\s\S]*?)((\n\s*\/\/.*\n\s*\})|(\n\s*\}))/
-    const match = configContent.match(schemaRegex)
-
-    if (!match) {
-      throw new Error('Could not find schema object in config/database.ts')
-    }
-
-    const beforeClosing = match[1]
-    const closing = match[2]
-
-    // Check if the last non-whitespace, non-comment character before closing is a comma
-    const contentBeforeClosing = beforeClosing.replace(/\s*\/\/.*$/gm, '').trim()
-    const hasTrailingComma = contentBeforeClosing.endsWith(',')
-
-    // Check if there are any existing tables (contains colon that's not in a comment)
-    const hasExistingTables = /:\s*[^\/\n]*[^,\s\/]/.test(beforeClosing)
-
-    let newEntry
-    if (!hasExistingTables) {
-      // First table
-      newEntry = `\n  ${plural}: ${plural}Table,`
-    } else if (hasTrailingComma) {
-      // Has existing tables and trailing comma
-      newEntry = `\n  ${plural}: ${plural}Table,`
-    } else {
-      // Has existing tables but no trailing comma
-      newEntry = `,\n  ${plural}: ${plural}Table,`
-    }
-
-    const updatedSchema = beforeClosing + newEntry + closing
-
-    configContent = configContent.replace(schemaRegex, updatedSchema)
-
-    await writeFile(configPath, configContent, 'utf8')
-  }
-
-  private capitalize(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1)
   }
 }

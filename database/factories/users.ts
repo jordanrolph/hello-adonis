@@ -3,7 +3,7 @@ import { usersTable, type User } from '#models/users'
 import db from '#config/database'
 import hash from '@adonisjs/core/services/hash'
 
-export const userFactory = {
+export const usersFactory = {
   table: usersTable,
 
   /**

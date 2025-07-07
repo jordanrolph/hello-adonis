@@ -62,15 +62,15 @@ export default class MakeFactory extends BaseCommand {
 
     const singular = singularName.trim().toLowerCase()
     const plural = pluralName.trim().toLowerCase()
-    const capitalizedSingular = this.capitalize(singular)
+    const capitalizedSingular = singular.charAt(0).toUpperCase() + singular.slice(1)
 
-    this.logger.log(`Creating factory for "${capitalizedSingular}" (${plural})...`)
+    this.logger.log(`Creating "${plural}" factory...`)
 
     try {
       await this.createFactoryFile(singular, plural, capitalizedSingular)
-      this.logger.success(`Factory created at database/factories/${singular}.ts`)
-      this.logger.log(
-        `Remember to update database/seeders/database_seeder.ts to use your new factory`
+      this.logger.success(`Factory created at database/factories/${plural}.ts`)
+      this.logger.info(
+        'Remember to update `database/seeders/dev_seeder.ts` if you want to use data from this factory during development'
       )
     } catch (error) {
       this.logger.error(`Failed to create factory: ${error.message}`)
@@ -79,18 +79,18 @@ export default class MakeFactory extends BaseCommand {
   }
 
   private async createFactoryFile(singular: string, plural: string, capitalizedSingular: string) {
-    const factoryPath = join(process.cwd(), 'database', 'factories', `${singular}.ts`)
+    const factoryPath = join(process.cwd(), 'database', 'factories', `${plural}.ts`)
 
     if (existsSync(factoryPath)) {
-      throw new Error(`Factory file already exists at database/factories/${singular}.ts`)
+      throw new Error(`Factory file already exists at database/factories/${plural}.ts`)
     }
 
-    const factoryContent = `// database/factories/${singular}.ts
+    const factoryContent = `
 import { seed } from 'drizzle-seed'
 import { ${plural}Table, type ${capitalizedSingular} } from '#models/${plural}'
 import db from '#config/database'
 
-export const ${singular}Factory = {
+export const ${plural}Factory = {
   table: ${plural}Table,
   
   /**
@@ -122,9 +122,5 @@ export const ${singular}Factory = {
 `
 
     await writeFile(factoryPath, factoryContent, 'utf8')
-  }
-
-  private capitalize(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1)
   }
 }

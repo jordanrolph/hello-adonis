@@ -9,10 +9,9 @@ import { usersTable } from '#models/users'
  * Adonis service provider for interacting with the db.
  */
 
-// Build the schema object
 export const schema = {
-  // Other models will be automatically added here by `node ace make:model`
   users: usersTable,
+  // NOTE: Import new models above then add them to your Drizzle schema here
 }
 
 export function createDatabase() {

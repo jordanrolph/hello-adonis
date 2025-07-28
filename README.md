@@ -18,6 +18,15 @@ TODO: follow instructions to connect to postgres db
 TODO: run migration to initialise the database
 TODO: run seed to create test data
 
+1. Run `npm install`
+2. Copy `.env.example` file and rename to `.env`
+3. Run `node ace generate:key` to generate a random app key (automatically added to .env)
+4. Create a postgres database and add connection string to `DATABASE_URL` in `.env`
+5. Create a second postgres database, with a name ending _test. Add connection string to `.env.test`
+6. TODO: Add link guide to run db migration
+7. Run `node ace serve` to start the app
+
+
 Start development server: `node ace serve`
 
 ## Database with Drizzle ORM

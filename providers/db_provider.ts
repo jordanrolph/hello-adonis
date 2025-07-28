@@ -18,13 +18,7 @@ export default class DbProvider {
   }
 
   async start() {
-    const db = await this.app.container.make('db')
-    try {
-      // Test connection using the schema
-      await db.query.users.findFirst()
-    } catch (error) {
-      throw error
-    }
+    await this.app.container.make('db')
   }
 
   async shutdown() {

@@ -13,8 +13,9 @@ export function Signup({ flashMessages }: SignupProps) {
     <>
       <form action={route('auth.registration.store')} method="post">
         {csrfField()}
+
         {errorsBag?.E_INVALID_CREDENTIALS ?? (
-          <p safe>{JSON.stringify(errorsBag?.E_INVALID_CREDENTIALS)}</p>
+          <p safe>{errorsBag?.E_INVALID_CREDENTIALS}</p>
         )}
 
         <div>

@@ -1,8 +1,7 @@
 /// <reference types="@kitajs/html/alpine.d.ts" />
-import { csrfField } from '#view_helpers/csrfField'
-import { route } from '#view_helpers/route'
 import type { AuthenticatedUser } from '#types/auth'
 import { Vite } from '#view_helpers/assetPath'
+import { LogoutButton } from '../components/LogoutButton.js'
 
 interface HomeProps {
   user: AuthenticatedUser
@@ -14,10 +13,7 @@ export function Home({ user }: HomeProps) {
       <Vite.Entrypoint entrypoints={['resources/js/app.js']} />
       <h1 safe>Hello {user.fullName}</h1>
       <p>You are logged in as {user.email}</p>
-      <form action={route('auth.logout')} method="post">
-        {csrfField()}
-        <button type="submit">Logout</button>
-      </form>
+      <LogoutButton />
 
       {/* Simple Alpine test */}
       <div x-data="test">

@@ -6,6 +6,9 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { browserClient } from '@japa/browser-client'
 import { sessionBrowserClient } from '@adonisjs/session/plugins/browser_client'
 import { authBrowserClient } from '@adonisjs/auth/plugins/browser_client'
+import { apiClient } from '@japa/api-client'
+import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'
+import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
 import { execSync } from 'node:child_process'
 import env from '#start/env'
 import db from '#config/database'
@@ -19,13 +22,19 @@ import db from '#config/database'
  * Configure Japa plugins in the plugins array.
  * Learn more - https://japa.dev/docs/runner-config#plugins-optional
  */
-export const plugins: Config['plugins'] = [assert(),
-pluginAdonisJS(app),
-browserClient({
-  runInSuites: ['browser']
-}),
-sessionBrowserClient(app),
-authBrowserClient(app),
+export const plugins: Config['plugins'] = [
+  assert(),
+  pluginAdonisJS(app),
+  // Plugins for browser tests
+  browserClient({
+    runInSuites: ['browser']
+  }),
+  sessionBrowserClient(app),
+  authBrowserClient(app),
+  // Plugins for HTTP tests
+  apiClient(),
+  sessionApiClient(app),
+  shieldApiClient()
 ]
 /**
  * Configure lifecycle function to run before and after all the

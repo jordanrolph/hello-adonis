@@ -34,9 +34,11 @@ test.group('Login', (group) => {
     await page.locator('input[name="password"]').fill(mockUserPassword)
     await page.locator('button[type="submit"]').click()
 
+    // The logged in user can access the home page
     await page.waitForURL('/')
     await Promise.all([
-      page.assertTextContains('body', `You are logged in as ${mockUserData.email}`)])
+      page.assertTextContains('body', `You are logged in as ${mockUserData.email}`)
+    ])
   })
 
   test('login fails if email is incorrect', async ({ visit }) => {
@@ -50,7 +52,7 @@ test.group('Login', (group) => {
     await page.assertTextContains('body', 'Invalid credentials')
   })
 
-  test('login fails with incorrect password', async ({ visit }) => {
+  test('login fails if password is incorrect', async ({ visit }) => {
     const mockUserPassword = 'Pa$$word123'
     const incorrectPassword = 'Inco^^ect123'
     const userData = {
@@ -101,7 +103,7 @@ test.group('Login', (group) => {
     await page.assertTextContains('body', 'The email field must be a valid email address')
   })
 
-  test('email field retains value after password validation error', async ({ visit, assert }) => {
+  test('email input field retains value after password validation error', async ({ visit, assert }) => {
     const page = await visit('/login')
     const testEmail = 'john@example.com'
 
@@ -112,5 +114,23 @@ test.group('Login', (group) => {
     const emailInput = page.locator('input[name="email"]')
     const emailInputValue = await emailInput.inputValue()
     assert.equal(emailInputValue, testEmail)
+  })
+
+  test('authenticated users get redirected from login page to home page', async ({ visit, browserContext }) => {
+    // Create a mock user in the database and authenticate as them
+    const mockUserData = {
+      email: 'john@example.com',
+      password: await hash.make("Pa$$word1"),
+      fullName: 'John Doe',
+    }
+    const [user] = await db.insert(usersTable).values(mockUserData).returning()
+    await browserContext.loginAs(user)
+
+    // Attempt to visit the login page when logged in
+    const page = await visit('/login')
+
+    // But expect to be redirected to the home page instead
+    await page.waitForURL('/')
+    await page.assertTextContains('body', `Hello ${mockUserData.fullName}`)
   })
 })

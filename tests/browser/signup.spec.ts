@@ -23,7 +23,7 @@ test.group('Signup', (group) => {
   })
 
 
-  test('creates new user with valid data', async ({ visit, assert }) => {
+  test('creates new user with valid data and authenticates as them', async ({ visit, assert }) => {
     const mockUserData = {
       email: 'john@example.com',
       password: 'Pa$$word123',
@@ -40,8 +40,11 @@ test.group('Signup', (group) => {
     // Submit the form
     await page.locator('button[type="submit"]').click()
 
-    // Wait for navigation to complete
+    // The logged in user is redirected and can now access the home page
     await page.waitForURL('/')
+    await Promise.all([
+      page.assertTextContains('body', `You are logged in as ${mockUserData.email}`)
+    ])
 
     // Check the new user was created correctly in the db
     const createdUser = await db.query.users.findFirst({
@@ -197,6 +200,25 @@ test.group('Signup', (group) => {
     // Ensure no user was created
     const userCount = await db.select().from(usersTable)
     assert.lengthOf(userCount, 0)
+  })
+
+
+  test('authenticated users get redirected from signup page to home page', async ({ visit, browserContext }) => {
+    // Create a mock user in the database and authenticate as them
+    const mockUserData = {
+      email: 'john@example.com',
+      password: await hash.make("Pa$$word1"),
+      fullName: 'John Doe',
+    }
+    const [user] = await db.insert(usersTable).values(mockUserData).returning()
+    await browserContext.loginAs(user)
+
+    // Attempt to visit the login page when logged in
+    const page = await visit('/signup')
+
+    // But expect to be redirected to the home page instead
+    await page.waitForURL('/')
+    await page.assertTextContains('body', `Hello ${mockUserData.fullName}`)
   })
 })
 

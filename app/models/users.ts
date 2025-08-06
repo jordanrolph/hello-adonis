@@ -1,4 +1,6 @@
 import { pgTable, integer, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
+import { postsTable } from '#models/posts'
 
 export const usersTable = pgTable('users', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -11,3 +13,7 @@ export const usersTable = pgTable('users', {
 })
 
 export type User = typeof usersTable.$inferSelect
+
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  posts: many(postsTable),
+}))

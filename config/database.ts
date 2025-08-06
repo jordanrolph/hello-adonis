@@ -2,6 +2,7 @@ import env from '#start/env'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
 import { usersTable } from '#models/users'
+import { postsTable } from '#models/posts'
 
 /**
  * These functions are to setup a Drizzle database connection
@@ -11,6 +12,7 @@ import { usersTable } from '#models/users'
 
 export const schema = {
   users: usersTable,
+  posts: postsTable,
   // NOTE: Import new models above then add them to your Drizzle schema here
 }
 

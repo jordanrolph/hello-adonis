@@ -36,10 +36,24 @@ export default class MakeMigration extends BaseCommand {
     this.logger.log(`Asking Drizzle to make a migration called "${migrationName}"...`)
 
     try {
-      execSync(`npx drizzle-kit generate --config=drizzle.config.ts --name=${migrationName}`, {
-        stdio: 'inherit',
-        encoding: 'utf8',
-      })
+      /**
+       * Here `NODE_OPTIONS='--import tsx'` is used to run the drizzle generate
+       * command using tsx. This is a workaround for the "Cannot find module" errors
+       * with Drizzle where Drizzle's execution context is unable to resolve modules
+       * that have circular imports (used when defining model relations), or imports
+       * with explicit file extensions (imported as .js where the file is .ts).
+       * `tsx` has superior ESM and TS support so it is able to handle these files.
+       * Related: https://github.com/drizzle-team/drizzle-orm/issues/1228
+       * Related: https://github.com/drizzle-team/drizzle-orm/issues/849
+       */
+      execSync(
+        `NODE_OPTIONS='--import tsx' npx drizzle-kit generate --config=drizzle.config.ts --name=${migrationName}`,
+        {
+          stdio: 'inherit',
+          encoding: 'utf8',
+          env: { ...process.env, NODE_OPTIONS: '--import tsx' } // Also pass it in env
+        }
+      )
     } catch (error) {
       this.logger.error('Failed to generate migration')
       this.exitCode = 1

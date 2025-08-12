@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "postinstall": "npx playwright install chromium"
+    "postinstall": "npx playwright install chromium",
+    "studio": "NODE_OPTIONS='--import tsx' npx drizzle-kit studio"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",

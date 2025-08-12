@@ -123,7 +123,27 @@ This starter swaps the Adonis default EdgeJS template engine for ([KitaJS HTML](
 
 The TSX syntax is easy to read, and gives type hinting, support for components, and syntax highlighting in most code editors without needing any special plugins.
 
-Kita only renders static HTML on the server, so we don't get any of the client side functionality from React or NextJS. But this simplicity does allow for really easy developer experience. You don't need to worry about data fetching or loading states - just pass the data to the view directly from a controller.
+Kita only renders static HTML on the server, so we don't get any of the client side functionality from React or NextJS. But this simplicity does allow for really easy developer experience. You don't need to worry about data fetching or loading states - just pass the data to the view directly from a controller. 
+
+## Note on returning JSX from controllers
+
+Controller file names need the `.tsx` extension if the controller returns a JSX view. `node ace make:controller` creates files with a `.ts` extension by default, so you will need to rename the file to `.tsx` manually.
+
+For example, this show method returns a view in a JSX syntax, so this controller would need a `.tsx` extension
+
+```jsx
+// app/controllers/my_controller.tsx
+
+export default class MyController {
+    async show() {
+        return (
+            <DefaultLayout pageTitle="My Page">
+                Hello world
+            </DefaultLayout>
+        )
+    }
+}
+```
 
 ## Adding CSS and JS to Kita views
 

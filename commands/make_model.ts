@@ -1,6 +1,6 @@
 import { BaseCommand, args } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
-import { writeFile, readFile } from 'node:fs/promises'
+import { writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import vine from '@vinejs/vine'
@@ -97,6 +97,7 @@ export default class MakeModel extends BaseCommand {
     }
 
     const modelContent = `import { pgTable, integer, timestamp } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
 
 export const ${plural}Table = pgTable('${plural}', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -107,6 +108,10 @@ export const ${plural}Table = pgTable('${plural}', {
 })
 
 export type ${capitalizedSingular} = typeof ${plural}Table.$inferSelect
+
+export const ${plural}Relations = relations(${plural}Table, () => ({
+  // Add relations to other table models here
+}))
 `
 
     await writeFile(modelPath, modelContent, 'utf8')

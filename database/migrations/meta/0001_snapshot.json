@@ -1,5 +1,5 @@
 {
-  "id": "ec930ae0-0c0d-4aba-b35e-34a4833ccb44",
+  "id": "29e8adc8-7f7a-47f9-92d9-ec1634bb2e55",
   "prevId": "568f8d34-1938-44ba-89e7-1deab91fe7a0",
   "version": "7",
   "dialect": "postgresql",
@@ -30,12 +30,6 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         },
         "body": {
           "name": "body",

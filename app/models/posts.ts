@@ -6,7 +6,6 @@ import { usersTable } from '#models/users'
 export const postsTable = pgTable('posts', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   authorId: integer('author_id'),
-  title: text().notNull(),
   body: text().notNull(),
   updated_at: timestamp(),
   created_at: timestamp().defaultNow().notNull(),

@@ -1,19 +1,44 @@
 /// <reference types="@kitajs/html/alpine.d.ts" />
 import type { AuthenticatedUser } from '#types/auth'
+import type { PostWithAuthor } from '#types/posts'
 import { Vite } from '#view_helpers/assetPath'
 import { LogoutButton } from '../components/LogoutButton.js'
 
 interface HomeProps {
   user: AuthenticatedUser
+  posts: PostWithAuthor[]
 }
 
-export function Home({ user }: HomeProps) {
+export function Home({ user, posts }: HomeProps) {
   return (
     <>
       <Vite.Entrypoint entrypoints={['resources/js/app.js']} />
       <h1 safe>Hello {user.fullName}</h1>
       <p>You are logged in as {user.email}</p>
       <LogoutButton />
+
+      <div class="posts">
+        <h2>Recent Posts</h2>
+        {posts.length === 0 ? (
+          <p>No posts yet.</p>
+        ) : (
+          <div class="posts-list">
+            {posts.map((post) => (
+              <div class="post">
+                <div class="post-content">
+                  <p>{post.body}</p>
+                </div>
+                <div class="post-meta">
+                  <small>
+                    By {post.author?.fullName || 'Unknown Author'} on{' '}
+                    {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'Unknown date'}
+                  </small>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Simple Alpine test */}
       <div x-data="test">
